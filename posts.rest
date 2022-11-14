@@ -1,0 +1,114 @@
+GET http://localhost:5000/guides/
+
+
+###
+POST   http://localhost:5000/transporters/
+Content-Type: application/json
+
+{   
+    "social_reason"  :  "req..raja" ,
+    "trade_register"  :  "req..family_name" ,
+    "juridical_statute"  :  "req..email" ,
+    "fax_number" :  "req.body." ,
+    "phone_number" : "req.body." ,
+    "email" : "ppp@gmail.com" ,
+    "adresse" : "req.body." ,
+    "nationality" : "re.nationality" ,
+    "speciality" : "req.bo" ,
+    "password"  :  "ppp", 
+    "hasLogo"  :  "false" 
+}
+
+###
+
+POST   http://localhost:5000/guides/
+Content-Type: application/json
+
+{   
+    "first_name"  :  "req..raja" ,
+    "family_name"  :  "req..family_name" ,
+    "juridical_statute"  :  "req..email" ,
+    "fax_number" :  "req.body." ,
+    "phone_number" : "req.body." ,
+    "email" : "wisllo@gmail.com" ,
+    "adresse" : "req.body." ,
+    "nationality" : "re.nationality" ,
+    "speciality" : "req.bo" ,
+    "password"  :  "req.b", 
+    "hasLogo"  :  "false" 
+}
+
+###
+
+POST http://localhost:5000/trainings/
+Content-Type: application/json
+
+    {   
+        "title": "re",
+        "description":"req",
+        "miniature":"req"
+    }
+
+###
+
+POST   http://localhost:5000/administrators/signin
+Content-Type: application/json
+
+{   
+    "email": "wac@gmail.com",
+    "password": "waciozdjizjd"
+}
+
+###
+
+POST   http://localhost:5000/guideConsultations/
+Content-Type: application/json
+
+{   
+    "follower": "6311598b7a641b7c6ea42ebc",
+    "guide": "63115b107a641b7c6ea42edf",
+    "title": "wac@gmail.com",
+    "description": "waciozdjizjd",
+    "date": "05-06-2001",
+    "validation": "false"
+}
+
+###
+
+POST   http://localhost:5000/plans/
+Content-Type: application/json
+
+{   
+    "title": "Plan 2",
+    "prix": "400 $",
+    "type": "seller pack"
+}
+
+###
+
+PATCH http://localhost:5000/trainings/630cc480ddb645a845868361
+Content-Type: application/json
+
+{   
+    "hasVideo": "false"
+}
+
+###
+
+POST http://localhost:5000/source_products/
+Content-Type: application/json
+
+{
+    "link" : "https://www.youtube.com/",
+    "categorie" : "YouTube"
+}
+
+###
+
+PUT http://localhost:5000/images/630c152a29a363deb7e6343f/   
+
+###
+
+delete  http://localhost:5000/plans/6312609495081698ba876f88
+
+
