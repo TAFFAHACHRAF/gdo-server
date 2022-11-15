@@ -1,11 +1,9 @@
-import Seller from "../models/Seller.js";
-import jwt from "jsonwebtoken"
-import { token } from 'morgan';
- 
+import {Seller} from "../models/Company.js";
+import {Compte} from "../models/Compte.js";
 
 export const getSellers = async (req,res)=>{
     try{
-        const sellers = await Seller.find()
+        const sellers = await Seller.find();
         res.status(200).json(sellers);
     }catch(err){
         res.status(400).json({message : err.message})
@@ -17,69 +15,52 @@ export const getSellerById = async (req,res)=>{
         const seller = await Seller.findById(req.params.SellerId)
         res.json(seller);
     }catch(err){
-        console.log(res.body)
+        console.json(err)
     }
 }
 
-export const getSellersCount = async (req,res)=>{
+export const countSellers = async (req,res)=>{
     try{
-        const sellers = await Seller.countDocuments({})
-        res.json({sellers});
+        const countSellers = await Seller.countDocuments({})
+        res.json({countSellers});
     }catch(err){
         res.json({message : err.message})
     }
 }
 
-export const createSeller = async (req,res) => {
-    const emailExists = await Seller.findOne({ email: req.body.email });
-    if (emailExists) {
-        return res.status(400).json({ error: 'Email already used' });
+export const createSeller = async (req,res,next) => {
+    const compte = {
+        email : req.body.email,
+        password : req.body.password
     }
+    const newCompte=new Compte(compte);
+    const saved=await newCompte.save();
 
-    const seller=req.body
-    const newSeller = new Seller(seller)
-    try{
-        const saved=await newSeller.save()
-        res.send({'_id' : saved._id})
-    }catch(err){
-        res.status(409).json({message : err.message})
+    if(saved){
+        const compte = await Compte.findOne({email : req.body.email,password : req.body.password});
+        const seller = {
+            socialReason : req.body.socialReason,
+            nationality : req.body.nationality,
+            speciality : req.body.speciality,
+            tradeRegister : req.body.tradeRegister,
+            juridicalStatute : req.body.juridicalStatute,
+            faxNumber : req.body.faxNumber,
+            phoneNumber : req.body.phoneNumber,
+            adresse : req.body.adresse,
+            compte : compte._id
+        }
+        const newSeller = new Seller(seller)
+
+        try{
+            const saved=await newSeller.save()
+            res.send(saved) 
+        }catch(err){
+            res.status(409).json({message : err.message})
+        }
     }
-}
-
-export const signin = async (req,res) => {
-    const {email,password} = req.body
-
-    Seller.findOne({email}, (err, Seller) => {
-        if(err || !Seller){
-            return res.status(400).json({
-                error : "Email was not found"
-            })
-        }
-
-        // Authentificate
-        if(!Seller.authentificate(password)){
-            return res.status(400).json({
-                error : "Email and password dot not match"
-            })
-        }
-
-        // create token
-        const accessToken = jwt.sign({_id: Seller._id}, 'eifuefh845612@')
-
-        // put token in cookie
-        res.cookie('token',token,{expire: new Date() + 1})
-
-        //send response
-        const {_id, name, email} = Seller
-        return res.json({
-            accessToken,
-            Seller: {
-                _id,
-                name,
-                email
-            }
-        })
-    })
+    else{
+        res.send('Accound cant be created');
+    }
 }
 
 export const deleteSeller = async (req,res) => {
@@ -99,20 +80,15 @@ export const updateSeller = async (req,res) => {
             },
             { 
                 $set : { 
-                    social_reason:req.body.social_reason,
-                    nationality:req.body.nationality,
-                    speciality:req.body.speciality,
-                    trade_register:req.body.trade_register,
-                    company_logo : req.body.company_logo,
-                    juridical_statute:req.body.juridical_statute,
-                    postal_code:req.body.postal_code,
-                    fax_number : req.body.fax_number,
-                    phone_number : req.body.phone_number,
+                    socialReason: req.body.socialReason,
+                    nationality: req.body.nationality,
+                    speciality: req.body.speciality,
+                    tradeRegister: req.body.tradeRegister,
+                    juridicalStatute: req.body.juridicalStatute,
+                    faxNumber: req.body.faxNumber,
+                    phoneNumber: req.body.phoneNumber,
                     adresse: req.body.adresse,
-                    verified : req.body.verified,
-                    email : req.body.email,
-                    password : req.body.password,
-                    hasLogo:req.body.hasLogo                       
+                    isSeller: req.body.isSeller
                 }  
             }
         );

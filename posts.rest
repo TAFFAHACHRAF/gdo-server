@@ -2,21 +2,20 @@ GET http://localhost:5000/guides/
 
 
 ###
-POST   http://localhost:5000/transporters/
+POST   http://localhost:5000/sellers/
 Content-Type: application/json
 
 {   
-    "social_reason"  :  "req..raja" ,
-    "trade_register"  :  "req..family_name" ,
-    "juridical_statute"  :  "req..email" ,
-    "fax_number" :  "req.body." ,
-    "phone_number" : "req.body." ,
-    "email" : "ppp@gmail.com" ,
-    "adresse" : "req.body." ,
-    "nationality" : "re.nationality" ,
-    "speciality" : "req.bo" ,
-    "password"  :  "ppp", 
-    "hasLogo"  :  "false" 
+    "socialReason"  :  "sellers" ,
+    "nationality"  :  "req..family_name" ,
+    "speciality"  :  "req..email" ,
+    "tradeRegister" :  "req.body." ,
+    "juridicalStatute" : "req.body." ,
+    "faxNumber" : "pzefioj@gmail.com" ,
+    "phoneNumber" : "req.body." ,
+    "adresse" : "re.nationality",
+    "email":"zoijoilfjz@gmail.com",
+    "password":"zpeofkpozekfpokze"
 }
 
 ###
@@ -86,11 +85,19 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:5000/trainings/630cc480ddb645a845868361
+PATCH http://localhost:5000/transporters/637384185dcdb0a4af29c817
 Content-Type: application/json
 
 {   
-    "hasVideo": "false"
+    "socialReason": "req.body.socialReason",
+    "nationality": "req.body.nationality",
+    "speciality": "req.body.speciality",
+    "tradeRegister": "req.body.tradeRegister",
+    "juridicalStatute": "req.body.juridicalStatute",
+    "faxNumber": "req.body.faxNumber",
+    "phoneNumber": "req.body.phoneNumber",
+    "adresse": "req.body.adresse",
+    "isTransporter":false
 }
 
 ###
@@ -109,6 +116,6 @@ PUT http://localhost:5000/images/630c152a29a363deb7e6343f/
 
 ###
 
-delete  http://localhost:5000/plans/6312609495081698ba876f88
+delete  http://localhost:5000/transporters/6373d0c16d3d0f34a2481b34
 
 

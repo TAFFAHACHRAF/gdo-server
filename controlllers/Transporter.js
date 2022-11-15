@@ -1,14 +1,9 @@
-import Transporter from "../models/Transporter.js";
-import jwt from "jsonwebtoken"
-import { token } from 'morgan';
-import * as multer from "multer"
-
-
-
+import {Transporter} from "../models/Company.js";
+import {Compte} from "../models/Compte.js";
 
 export const getTransporters = async (req,res)=>{
     try{
-        const transporters = await Transporter.find()
+        const transporters = await Transporter.find();
         res.status(200).json(transporters);
     }catch(err){
         res.status(400).json({message : err.message})
@@ -24,71 +19,49 @@ export const getTransporterById = async (req,res)=>{
     }
 }
 
-export const getTransportersCount = async (req,res)=>{
+export const countTransporters = async (req,res)=>{
     try{
-        const transporters = await Transporter.countDocuments({})
-        res.json({transporters});
+        const countTransporters = await Transporter.countDocuments({})
+        res.json({countTransporters});
     }catch(err){
         res.json({message : err.message})
     }
 }
 
 export const createTransporter = async (req,res,next) => {
-    const emailExists = await Transporter.findOne({ email: req.body.email });
-    if (emailExists) {
-        return res.status(400).json({ error: 'Email already used' });
+    const compte = {
+        email : req.body.email,
+        password : req.body.password
     }
+    const newCompte=new Compte(compte);
+    const saved=await newCompte.save();
 
-    const transporter= req.body
-    const newTransporter = new Transporter(transporter)
-    try{
-        const saved=await newTransporter.save()
-        res.send(saved) 
-        console.log(saved)
-    }catch(err){
-        res.status(409).json({message : err.message})
+    if(saved){
+        const compte = await Compte.findOne({email : req.body.email,password : req.body.password});
+        const transporter= {
+            socialReason : req.body.socialReason,
+            nationality : req.body.nationality,
+            speciality : req.body.speciality,
+            tradeRegister : req.body.tradeRegister,
+            juridicalStatute : req.body.juridicalStatute,
+            faxNumber : req.body.faxNumber,
+            phoneNumber : req.body.phoneNumber,
+            adresse : req.body.adresse,
+            compte : compte._id
+        }
+        const newTransporter = new Transporter(transporter)
+
+        try{
+            const saved=await newTransporter.save()
+            res.send(saved) 
+        }catch(err){
+            res.status(409).json({message : err.message})
+        }
     }
-}
-
-export const signin = async (req,res) => {
-    const {email,password} = req.body
-
-    Transporter.findOne({email}, (err, Transporter) => {
-        if(err || !Transporter){
-            return res.status(400).json({
-                error : "Email was not found"
-            })
-        }
-
-        // Authentificate
-        if(!Transporter.authentificate(password)){
-            return res.status(400).json({
-                error : "Email and password dot not match"
-            })
-        }
-
-        // create token
-        const accessToken = jwt.sign({_id: Transporter._id}, 'eifuefh845612@')
-
-        // put token in cookie
-        res.cookie('token',token,{expire: new Date() + 1})
-
-        //send response
-        const {_id, name, email} = Transporter
-        return res.json({
-            accessToken,
-            Transporter: {
-                _id,
-                name,
-                email
-            }
-        })
-    })
 }
 
 export const deleteTransporter = async (req,res) => {
     try{
-        // const removedTransporter = await Transporter.deleteMany({ verified : { $gte: 'false' } })
         const removedTransporter = await Transporter.deleteOne({ _id : req.params.TransporterId})
         res.json(removedTransporter);
     } catch (err){
@@ -104,20 +77,15 @@ export const updateTransporter = async (req,res) => {
             },
             { 
                 $set : { 
-                    social_reason:req.body.social_reason,
-                    nationality:req.body.nationality,
-                    speciality:req.body.speciality,
-                    trade_register:req.body.trade_register,
-                    company_logo : req.body.company_logo,
-                    juridical_statute:req.body.juridical_statute,
-                    postal_code:req.body.postal_code,
-                    fax_number : req.body.fax_number,
-                    phone_number : req.body.phone_number,
+                    socialReason: req.body.socialReason,
+                    nationality: req.body.nationality,
+                    speciality: req.body.speciality,
+                    tradeRegister: req.body.tradeRegister,
+                    juridicalStatute: req.body.juridicalStatute,
+                    faxNumber: req.body.faxNumber,
+                    phoneNumber: req.body.phoneNumber,
                     adresse: req.body.adresse,
-                    verified : req.body.verified,
-                    email : req.body.email,
-                    password : req.body.password,
-                    hasLogo:req.body.hasLogo               
+                    isTransporter:req.body.isTransporter
                 }  
             }
         );
