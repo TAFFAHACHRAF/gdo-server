@@ -1,4 +1,4 @@
-GET http://localhost:5000/guides/
+GET https://gdo-derb-omar.herokuapp.com/sellers
 
 
 ###
